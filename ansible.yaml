@@ -1,0 +1,19 @@
+---
+
+- hosts: q_cloud
+  remote_user: root
+  tasks:
+    - name: deploy gsc-admin...
+      docker_container:
+        name: gsc-admin
+        image: yy194131/gsc-admin:{{image_tag}}
+        state: started
+        pull: true
+        restart: true
+        restart_policy: always
+        env:
+          SNOW_SECRET_KEY: "{{ SNOW_SECRET_KEY }}"
+          SNOW_SQLALCHEMY_DATABASE_URI: "{{ SNOW_SQLALCHEMY_DATABASE_URI }}"
+          SNOW_SERVER_NAME: "'\"127.0.0.1:5000\"'"
+        published_ports:
+          - "5000:5000"
