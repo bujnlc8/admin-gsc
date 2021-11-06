@@ -1,13 +1,14 @@
 # coding=utf-8
 
+import os
+
+import flask_login as login
 from flask import Flask
 from flask_admin import Admin
 from werkzeug.utils import import_string
-from snow.views.index import IndexView
-import flask_login as login
-from snow.ext import db
 
-import os
+from snow.ext import db
+from snow.views.index import IndexView
 
 modelviews = ['snow.views.index.account_view', 'snow.views.gsc.gsc_view']
 
