@@ -15,15 +15,15 @@ class GscAdmin(ModelView):
 
     @property
     def can_create(self):
-        return self.is_accessible() and login.current_user.role
+        return self.is_accessible() and (login.current_user.role & 1)
 
     @property
     def can_edit(self):
-        return self.can_create
+        return self.is_accessible() and (login.current_user.role & 2)
 
     @property
     def can_delete(self):
-        return self.can_create
+        return self.is_accessible() and (login.current_user.role & 4)
 
     can_view_details = True
 
@@ -34,6 +34,7 @@ class GscAdmin(ModelView):
         'work_dynasty': '朝代',
         'foreword': '前言',
         'content': '内容',
+        'content_short': '内容',
         'translation': '翻译',
         'intro': '简介',
         'baidu_wiki': '百度wiki',
@@ -47,7 +48,7 @@ class GscAdmin(ModelView):
     column_sortable_list = ('id_', )
 
     column_list = (
-        'id_', 'work_title', 'work_author', 'layout'
+        'id_', 'work_title', 'work_author', 'content_short'
     )
     column_filters = ('id_', 'work_title', 'work_author',
                       'work_dynasty', 'content', 'foreword')
@@ -79,6 +80,10 @@ class GscAdmin(ModelView):
             s = s.replace('\n', '<br>')
             return Markup('<div>' + s + '</div>')
 
+    def _render_content_short(self, context, model, name):
+        if model.content:
+            return model.content[:32] + '...'
+
     def _render_foreward(self, context, model, name):
         if model.foreword:
             s = model.foreword
@@ -102,12 +107,14 @@ class GscAdmin(ModelView):
             s = model.intro
             s = s.replace('\n', '<br>')
             return Markup('<div>' + s + '</div>')
+
     column_formatters = {
         'baidu_wiki': _render_baidu_wiki,
         'audio_id': _render_audio,
         'translation': _render_translation,
         'annotation_': _render_annotation,
         'content': _render_content,
+        'content_short': _render_content_short,
         'foreward': _render_foreward,
         'master_comment': _render_master_comment,
         'appreciation': _render_appreciation,

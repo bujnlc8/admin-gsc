@@ -13,9 +13,9 @@ from snow.models.account import Account
 
 class LoginForm(form.Form):
     user_name = fields.StringField(
-        validators=[validators.required()], label='用户名')
+        validators=[validators.required()], label='用户名:')
     password = fields.PasswordField(
-        validators=[validators.required()], label='密码')
+        validators=[validators.required()], label='密码:')
 
     def validate(self):
         user = self.get_user()
@@ -33,9 +33,9 @@ class LoginForm(form.Form):
 
 class RegistrationForm(form.Form):
     user_name = fields.StringField(
-        validators=[validators.required()], label='用户名')
+        validators=[validators.required()], label='用户名:')
     password = fields.PasswordField(
-        validators=[validators.required()], label='密码')
+        validators=[validators.required()], label='密码:')
 
     def validate(self):
         if db.session.query(Account).filter_by(user_name=self.user_name.data).count() > 0:
@@ -87,10 +87,12 @@ class IndexView(AdminIndexView):
     def is_visible(self):
         return False
 
+
 class AccountModelView(ModelView):
 
     def is_accessible(self):
-        return login.current_user.is_authenticated and login.current_user.role
+        return (login.current_user.is_authenticated and login.current_user.role & 1 and login.current_user.role & 2 and
+                login.current_user.role & 4)
 
 
 account_view = AccountModelView(Account, db.session, name='用户管理')
