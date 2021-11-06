@@ -18,4 +18,6 @@
 
 欢迎扫码体验。
 
+另见 [后端项目](https://github.com/bujnlc8/go-gsc) 及[前端项目](https://github.com/bujnlc8/igsc-wx)
+
 如果在使用过程中有任何问题，欢迎交流讨论。
