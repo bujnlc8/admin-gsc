@@ -54,6 +54,6 @@ jobs:
           ssh-keyscan -H '49.234.18.99' >> ~/.ssh/known_hosts
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
           sudo apt install python -y
-          sudo pip install -r requirements.txt
+          sudo pip install ansible==4.8.0 docker==4.4.4
           sudo chmod 755 deploy.sh
           bash deploy.sh

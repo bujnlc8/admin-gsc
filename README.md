@@ -1,3 +1,5 @@
+![build status](https://github.com/bujnlc8/gsc-admin/actions/workflows/snow.yaml/badge.svg)
+
 # i古诗词后台管理
 
 如图:
