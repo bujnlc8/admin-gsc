@@ -84,6 +84,8 @@ class IndexView(AdminIndexView):
         login.logout_user()
         return redirect(url_for('.index'))
 
+    def is_visible(self):
+        return False
 
 class AccountModelView(ModelView):
 
