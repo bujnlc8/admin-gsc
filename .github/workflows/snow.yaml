@@ -12,16 +12,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set env
+      - name: Set ENV
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - name: Log in to Docker Hub
+      - name: Log into Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Build and Push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
@@ -36,16 +36,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set env
+      - name: Set ENV
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
-      - name: Install SSH Key
+      - name: Install SSH KEY
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: '49.234.18.99'
 
-      - name: Install ansible & Fire
+      - name: Install Ansible & Fire
         env:
           IMAGE_TAG: ${{ env.RELEASE_VERSION }}
           SNOW_SECRET_KEY: ${{secrets.SNOW_SECRET_KEY}}
@@ -54,6 +54,5 @@ jobs:
           ssh-keyscan -H '49.234.18.99' >> ~/.ssh/known_hosts
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
           sudo apt install python -y
-          sudo pip install ansible==4.8.0 docker==4.4.4
-          sudo chmod 755 deploy.sh
+          sudo pip install ansible==4.8.0
           bash deploy.sh

@@ -13,9 +13,9 @@ from snow.models.account import Account
 
 class LoginForm(form.Form):
     user_name = fields.StringField(
-        validators=[validators.required()], label='用户名:')
+        validators=[validators.DataRequired()], label='用户名:')
     password = fields.PasswordField(
-        validators=[validators.required()], label='密码:')
+        validators=[validators.DataRequired()], label='密码:')
 
     def validate(self):
         user = self.get_user()
@@ -33,9 +33,9 @@ class LoginForm(form.Form):
 
 class RegistrationForm(form.Form):
     user_name = fields.StringField(
-        validators=[validators.required()], label='用户名:')
+        validators=[validators.DataRequired()], label='用户名:')
     password = fields.PasswordField(
-        validators=[validators.required()], label='密码:')
+        validators=[validators.DataRequired()], label='密码:')
 
     def validate(self):
         if db.session.query(Account).filter_by(user_name=self.user_name.data).count() > 0:

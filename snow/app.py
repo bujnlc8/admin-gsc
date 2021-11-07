@@ -3,7 +3,7 @@
 import os
 
 import flask_login as login
-from flask import Flask
+from flask import Flask, redirect, request
 from flask_admin import Admin
 from werkzeug.utils import import_string
 
@@ -23,7 +23,9 @@ def create_app():
     app.config['TESTING'] = os.environ.get('SNOW_TESTING', 'false') == 'true'
     app.config['SERVER_NAME'] = os.environ.get('SNOW_SERVER_NAME')
     app.config['SECRET_KEY'] = os.environ.get('SNOW_SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SNOW_SQLALCHEMY_DATABASE_URI')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+        'SNOW_SQLALCHEMY_DATABASE_URI')
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 1440
     app.config['SQLALCHEMY_POOL_SIZE'] = 100
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 5
