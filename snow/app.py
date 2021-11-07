@@ -19,6 +19,8 @@ login_manager = login.LoginManager()
 
 def create_app():
     app = Flask('snow')
+    app.config['DEBUG'] = os.environ.get('SNOW_DEBUG', 'false') == 'true'
+    app.config['TESTING'] = os.environ.get('SNOW_TESTING', 'false') == 'true'
     app.config['SERVER_NAME'] = os.environ.get('SNOW_SERVER_NAME')
     app.config['SECRET_KEY'] = os.environ.get('SNOW_SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SNOW_SQLALCHEMY_DATABASE_URI')

@@ -8,7 +8,29 @@ from snow.ext import db
 from snow.models.gsc import Gsc
 
 
+DYNASTY = [
+    ('宋', '宋'),
+    ('唐', '唐'),
+    ('元', '元'),
+    ('现代', '现代'),
+    ('五代十国', '五代十国'),
+    ('上古', '上古'),
+    ('商', '商'),
+    ('周', '周'),
+    ('秦', '秦'),
+    ('汉', '汉'),
+    ('三国', '三国'),
+    ('晋', '晋'),
+    ('南北朝', '南北朝'),
+    ('隋', '隋'),
+    ('金', '金'),
+    ('明', '明'),
+    ('清', '清'),
+]
+
+
 class GscAdmin(ModelView):
+    page_size = 12
 
     def is_accessible(self):
         return login.current_user.is_authenticated
@@ -82,7 +104,7 @@ class GscAdmin(ModelView):
 
     def _render_content_short(self, context, model, name):
         if model.content:
-            return model.content[:32] + '...'
+            return model.content[:28] + '...'
 
     def _render_foreward(self, context, model, name):
         if model.foreword:
@@ -119,6 +141,9 @@ class GscAdmin(ModelView):
         'master_comment': _render_master_comment,
         'appreciation': _render_appreciation,
         'intro': _render_intro,
+        'layout': lambda a, b, c, d: '居中' if c.layout == 'center' else '缩进',
+        'work_author': lambda a, b, c, d: Markup(
+            '<a  target="_blank" href="https://baike.baidu.com/item/{}">{}</a>'.format(c.work_author, c.work_author))
     }
 
     form_extra_fields = {
@@ -130,7 +155,8 @@ class GscAdmin(ModelView):
         'appreciation': fields.TextAreaField(label='赏析', default=''),
         'master_comment': fields.TextAreaField(label='辑评', default=''),
         'audio_id': fields.IntegerField(label='音频id', default=0),
-        'layout': fields.SelectField(label='布局', choices=[('indent', '缩进'), ('center', '居中')])
+        'layout': fields.SelectField(label='布局', choices=[('indent', '缩进'), ('center', '居中')]),
+        'work_dynasty': fields.SelectField(label='朝代', validate_choice=True, choices=DYNASTY),
     }
 
     form_columns = ('work_title', 'work_dynasty', 'work_author', 'foreword', 'content', 'translation', 'intro',
@@ -140,7 +166,31 @@ class GscAdmin(ModelView):
         if is_created:
             with db.session.no_autoflush:
                 gsc = Gsc.query.order_by(Gsc.id_.desc()).first()
-                model.id_ = gsc.id_ + 1
+                if gsc:
+                    model.id_ = gsc.id_ + 1
+                else:
+                    model.id_ = 1
+        if form.data['content']:
+            model.content = form.data['content'].replace('　', '')
+            model.content = model.content.replace('\n\r\n', '\n')
+        if form.data['foreword']:
+            model.foreword = form.data['foreword'].replace('　', '')
+            model.foreword = model.foreword.replace('\n\r\n', '\n')
+        if form.data['translation']:
+            model.translation = form.data['translation'].replace('　', '')
+            model.translation = model.translation.replace('\n\r\n', '\n')
+        if form.data['intro']:
+            model.intro = form.data['intro'].replace('　', '')
+            model.intro = model.intro.replace('\n\r\n', '\n')
+        if form.data['annotation_']:
+            model.annotation_ = form.data['annotation_'].replace('　', '')
+            model.annotation_ = model.annotation_.replace('\n\r\n', '\n')
+        if form.data['appreciation']:
+            model.appreciation = form.data['appreciation'].replace('　', '')
+            model.appreciation = model.appreciation.replace('\n\r\n', '\n')
+        if form.data['master_comment']:
+            model.master_comment = form.data['master_comment'].replace('　', '')
+            model.master_comment = model.master_comment.replace('\n\r\n', '\n')
         return super(GscAdmin, self).on_model_change(form, model, is_created)
 
 
