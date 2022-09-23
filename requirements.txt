@@ -1,6 +1,6 @@
 --index-url https://pypi.tuna.tsinghua.edu.cn/simple
 Flask==2.0.2
-Flask-Admin==1.5.8
+Flask-Admin==1.6.0
 Flask-SQLAlchemy==2.5.1
 SQLAlchemy==1.4.26
 PyMySQL==1.0.2
