@@ -195,6 +195,6 @@ class GscAdmin(ModelView):
         return super(GscAdmin, self).on_model_change(form, model, is_created)
 
 
-category = '条目管理'
+category = 'i古诗词'
 
 gsc_view = GscAdmin(Gsc, db.session, name='诗词列表', category=category)
