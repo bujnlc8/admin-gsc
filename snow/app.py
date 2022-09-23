@@ -1,16 +1,18 @@
 # coding=utf-8
 
 import os
+import json
 
 import flask_login as login
 from flask import Flask, redirect, request
+from flask_redis import FlaskRedis
 from flask_admin import Admin
 from werkzeug.utils import import_string
 
-from snow.ext import db
+from snow.ext import db, redis
 from snow.views.index import IndexView
 
-modelviews = ['snow.views.index.account_view', 'snow.views.gsc.gsc_view']
+modelviews = ['snow.views.index.account_view', 'snow.views.gsc.gsc_view', 'snow.views.question.question_view']
 
 extensions = ['snow.ext.db']
 
@@ -24,14 +26,18 @@ def create_app():
     app.config['SERVER_NAME'] = os.environ.get('SNOW_SERVER_NAME')
     app.config['SECRET_KEY'] = os.environ.get('SNOW_SECRET_KEY')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-        'SNOW_SQLALCHEMY_DATABASE_URI')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SNOW_SQLALCHEMY_DATABASE_URI')
+    app.config['SQLALCHEMY_BINDS'] = json.loads(os.environ.get('SNOW_SQLALCHEMY_BINDS'))
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 1440
     app.config['SQLALCHEMY_POOL_SIZE'] = 100
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 5
-    admin = Admin(app, name='📚', template_mode='bootstrap4', base_template='base.html',
-                  index_view=IndexView(url='/', name=''))
+    app.config['SQLALCHEMY_POOL_TIMEOUT'] = 5
+    app.config['REDIS_URL'] = os.environ.get('SNOW_REDIS_URL')
+    admin = Admin(
+        app, name='📚', template_mode='bootstrap4', base_template='base.html', index_view=IndexView(url='/', name='')
+    )
     login_manager.init_app(app)
+    redis.init_app(app)
     for extension in extensions:
         ext = import_string(extension)
         ext.init_app(app)

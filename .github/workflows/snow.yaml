@@ -43,15 +43,17 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: '49.234.18.99'
+          known_hosts: '82.157.10.15'
 
       - name: Install Ansible & Fire
         env:
           IMAGE_TAG: ${{ env.RELEASE_VERSION }}
           SNOW_SECRET_KEY: ${{secrets.SNOW_SECRET_KEY}}
           SNOW_SQLALCHEMY_DATABASE_URI: ${{secrets.SNOW_SQLALCHEMY_DATABASE_URI}}
+          SNOW_SQLALCHEMY_BINDS: ${{secrets.SNOW_SQLALCHEMY_BINDS}}
+          SNOW_REDIS_URL: ${{secrets.SNOW_REDIS_URL}}
         run: |
-          ssh-keyscan -H '49.234.18.99' >> ~/.ssh/known_hosts
+          ssh-keyscan -H '82.157.10.15' >> ~/.ssh/known_hosts
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
           sudo apt install python -y
           sudo pip install ansible==4.8.0

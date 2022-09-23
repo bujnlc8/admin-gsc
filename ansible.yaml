@@ -14,6 +14,11 @@
         env:
           SNOW_SECRET_KEY: "{{ SNOW_SECRET_KEY }}"
           SNOW_SQLALCHEMY_DATABASE_URI: "{{ SNOW_SQLALCHEMY_DATABASE_URI }}"
+          SNOW_REDIS_URL: "{{ SNOW_REDIS_URL}}"
+          SNOW_SQLALCHEMY_BINDS: "{{SNOW_SQLALCHEMY_BINDS | string}}"
           SNOW_SERVER_NAME: "127.0.0.1:5000"
         published_ports:
           - "5000:5000"
+        volumes:
+          - /etc/localtime:/etc/localtime:ro
+          - /home/linghaihui/log:/log
