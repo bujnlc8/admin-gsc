@@ -1,18 +1,20 @@
 # coding=utf-8
 
-import os
 import json
+import os
 
 import flask_login as login
-from flask import Flask, redirect, request
-from flask_redis import FlaskRedis
+from flask import Flask
 from flask_admin import Admin
 from werkzeug.utils import import_string
 
 from snow.ext import db, redis
 from snow.views.index import IndexView
 
-modelviews = ['snow.views.index.account_view', 'snow.views.gsc.gsc_view', 'snow.views.question.question_view']
+modelviews = [
+    'snow.views.index.account_view', 'snow.views.gsc.gsc_view', 'snow.views.question.question_view',
+    'snow.views.feedback.feedback_view'
+]
 
 extensions = ['snow.ext.db']
 
