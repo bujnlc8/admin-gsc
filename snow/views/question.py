@@ -10,7 +10,7 @@ from snow.ext import db, redis
 
 from snow.models.question import Question
 
-CATEGORY = [(1, '常识'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '生活'), (6, '体育'), (7, '法规'), (8, '诗词')]
+CATEGORY = [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词')]
 
 LEVEL = [(1, '简单'), (2, '中等'), (3, '困难')]
 
