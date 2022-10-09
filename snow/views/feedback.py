@@ -69,6 +69,8 @@ class FeedbackView(ModelView):
             s.append('答案错误')
         if model.type_ & 8:
             s.append('其他')
+        if model.type_ & 16:
+            s.append('分类错误')
         return '、'.join(s)
 
     column_formatters = {
