@@ -12,10 +12,8 @@ from snow.models.account import Account
 
 
 class LoginForm(form.Form):
-    user_name = fields.StringField(
-        validators=[validators.DataRequired()], label='用户名:')
-    password = fields.PasswordField(
-        validators=[validators.DataRequired()], label='密码:')
+    user_name = fields.StringField(validators=[validators.DataRequired()], label='用户名:')
+    password = fields.PasswordField(validators=[validators.DataRequired()], label='密码:')
 
     def validate(self):
         user = self.get_user()
@@ -32,10 +30,8 @@ class LoginForm(form.Form):
 
 
 class RegistrationForm(form.Form):
-    user_name = fields.StringField(
-        validators=[validators.DataRequired()], label='用户名:')
-    password = fields.PasswordField(
-        validators=[validators.DataRequired()], label='密码:')
+    user_name = fields.StringField(validators=[validators.DataRequired()], label='用户名:')
+    password = fields.PasswordField(validators=[validators.DataRequired()], label='密码:')
 
     def validate(self):
         if db.session.query(Account).filter_by(user_name=self.user_name.data).count() > 0:
@@ -55,6 +51,8 @@ class IndexView(AdminIndexView):
     def login_view(self):
         form = LoginForm(request.form)
         if request.method.upper() == 'POST' and form.validate() and login.current_user.is_authenticated:
+            return redirect(url_for('gsc.index_view'))
+        if request.method.upper() == 'GET' and login.current_user and login.current_user.is_authenticated:
             return redirect(url_for('gsc.index_view'))
         link = '<p>Don\'t have an account? <a href="' + \
             url_for('.register_view') + '">Click here to register.</a></p>'
@@ -91,8 +89,10 @@ class IndexView(AdminIndexView):
 class AccountModelView(ModelView):
 
     def is_accessible(self):
-        return (login.current_user.is_authenticated and login.current_user.role & 1 and login.current_user.role & 2 and
-                login.current_user.role & 4)
+        return (
+            login.current_user.is_authenticated and login.current_user.role & 1 and login.current_user.role & 2
+            and login.current_user.role & 4
+        )
 
 
 account_view = AccountModelView(Account, db.session, name='用户管理')
