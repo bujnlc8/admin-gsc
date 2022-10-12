@@ -16,7 +16,8 @@
 
 小程序码见下图:
 
-![](resource/barcode.jpg)
+<image src="https://blog-1256650966.cos.ap-beijing.myqcloud.com/gh_5355d8f99118_430.jpg" style="width:300px; height:300px;">
+
 
 欢迎扫码体验。
 
@@ -29,3 +30,9 @@
 [vim插件https://github.com/bujnlc8/vim-gsc](https://github.com/bujnlc8/vim-gsc)
 
 如果在使用过程中有任何问题，欢迎交流讨论。
+
+
+**最近新写了一个答题小程序，欢迎扫码体验：**
+
+
+<image src="https://blog-1256650966.cos.ap-beijing.myqcloud.com/gh_a4b1f637d70d_430.jpg" style="width:300px; height:300px;">
