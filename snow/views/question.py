@@ -10,7 +10,7 @@ from snow.ext import db, redis
 
 from snow.models.question import Question
 
-CATEGORY = [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词')]
+CATEGORY = [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词'), (6, '驾考科目一'), (7, '驾考科目四')]
 
 LEVEL = [(1, '简单'), (2, '中等'), (3, '困难')]
 
@@ -74,7 +74,7 @@ class QuestionView(ModelView):
         s = ''
         if 'https://' in model.options:
             for x in enumerate(options):
-                s += '{}、<image src="{}" style="width:100px;"/><br><br>'.format(SERIAL[x[0]], x[1])
+                s += '{}、<image src="{}" style="width:180px;"/><br><br>'.format(SERIAL[x[0]], x[1])
             return Markup(s)
         for x, y in enumerate(options):
             s += SERIAL[x] + '、' + y + '<br>'
