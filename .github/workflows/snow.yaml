@@ -53,6 +53,7 @@ jobs:
           SNOW_SQLALCHEMY_BINDS: ${{secrets.SNOW_SQLALCHEMY_BINDS}}
           SNOW_REDIS_URL: ${{secrets.SNOW_REDIS_URL}}
           SNOW_COIN_URL: ${{secrets.SNOW_COIN_URL}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         run: |
           ssh-keyscan -H '82.157.10.15' >> ~/.ssh/known_hosts
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config

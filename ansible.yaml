@@ -3,6 +3,11 @@
 - hosts: q_cloud
   remote_user: root
   tasks:
+    - name: login to docker hub
+      docker_login:
+        username: yy194131
+        password: "{{ DOCKER_PASSWORD }}"
+
     - name: deploy gsc-admin...
       docker_container:
         name: gsc-admin
