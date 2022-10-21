@@ -1,16 +1,31 @@
 # coding=utf-8
+import os
+from datetime import datetime
+
 import flask_login as login
+import requests
 from flask_admin.contrib.sqla import ModelView
 from markupsafe import Markup
 from wtforms import fields
 
-from datetime import datetime
-
 from snow.ext import db, redis
-
 from snow.models.question import Question
 
-CATEGORY = [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词'), (6, '驾考科目一'), (7, '驾考科目四')]
+
+def get_category():
+    try:
+        url = os.environ.get('SNOW_COIN_URL', '').replace('coin/operate', 'common/category')
+        data = requests.get(url).json()['data']
+        res = []
+        for k, v in enumerate(data[1:]):
+            res.append((k + 1, v))
+        return res
+    except:
+        return
+
+
+CATEGORY = get_category() or [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词'), (6, '驾考科目一'), (7, '驾考科目四'),
+                              (8, '交通规则')]
 
 LEVEL = [(1, '简单'), (2, '中等'), (3, '困难')]
 
