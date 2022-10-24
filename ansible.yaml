@@ -5,13 +5,14 @@
   tasks:
     - name: login to docker hub
       docker_login:
-        username: yy194131
+        registry: https://registry.cn-beijing.aliyuncs.com
+        username: 75124771@qq.com
         password: "{{ DOCKER_PASSWORD }}"
 
     - name: deploy gsc-admin...
       docker_container:
         name: gsc-admin
-        image: yy194131/gsc-admin:{{image_tag}}
+        image: registry.cn-beijing.aliyuncs.com/roselle-1/gsc-admin:{{image_tag}}
         state: started
         pull: true
         restart: true
