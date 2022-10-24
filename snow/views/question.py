@@ -63,13 +63,14 @@ class QuestionView(ModelView):
         'level': '难度',
         'category': '分类',
         'status': '状态',
+        'analysis': '答案解析',
         'create_time': '创建时间',
         'update_time': '更新时间',
     }
 
     column_list = ('id_', 'content', 'options', 'answer', 'level', 'category', 'status', 'update_time')
 
-    form_columns = ('content', 'options', 'answer', 'level', 'category', 'status')
+    form_columns = ('content', 'options', 'answer', 'level', 'category', 'analysis', 'status')
     can_view_details = True
 
     column_choices = {
@@ -82,7 +83,7 @@ class QuestionView(ModelView):
         if '###' in model.content:
             content, image = model.content.split('###')
             return Markup('<span>{}</span><br><image src="{}" style="width:100px;"/>'.format(content, image))
-        return model.content
+        return Markup('<div>{}<div>'.format(model.content.replace('\n', '<br/>')))
 
     def _render_options(self, context, model, name):
         options = model.options.split('|')
@@ -99,6 +100,8 @@ class QuestionView(ModelView):
         'content': _render_content,
         'options': _render_options,
         'answer': lambda a, b, c, d: SERIAL[c.answer - 1],
+        'analysis': lambda a, b, c, d: Markup('<div>{}</div>'.format(c.analysis.replace('\n', '<br/>')))
+        if c.analysis else '无',
     }
 
     form_extra_fields = {
@@ -106,6 +109,7 @@ class QuestionView(ModelView):
         'level': fields.SelectField(label='难度', choices=LEVEL, default=1),
         'status': fields.SelectField(label='状态', choices=STATUS, default=1),
         'category': fields.SelectField(label='分类', choices=CATEGORY, default=2),
+        'analysis': fields.TextAreaField(label='答案解析', default='', description='支持有限的html标签，比如`img`, 具体见`https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html`'),
     }
 
     column_filters = ('content', 'id_', 'options', 'level', 'category', 'status')

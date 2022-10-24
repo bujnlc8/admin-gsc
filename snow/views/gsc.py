@@ -65,13 +65,13 @@ class GscAdmin(ModelView):
         'appreciation': '赏析',
         'master_comment': '辑评',
         'layout': '布局',
-        'audio_id': '音频',
+        'audio_id': '音频ID',
     }
 
     column_sortable_list = ('id_', )
 
     column_list = (
-        'id_', 'work_title', 'work_author', 'content_short'
+        'id_', 'work_title', 'work_author', 'content_short', 'audio_id',
     )
     column_filters = ('id_', 'work_title', 'work_author',
                       'work_dynasty', 'content', 'foreword')
