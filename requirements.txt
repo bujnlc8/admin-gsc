@@ -1,11 +1,11 @@
 --index-url https://pypi.tuna.tsinghua.edu.cn/simple
 Flask==2.0.2
-Flask-Admin==1.5.8
+Flask-Admin==1.6.0
 Flask-SQLAlchemy==2.5.1
 SQLAlchemy==1.4.26
 PyMySQL==1.0.2
-Flask-Login==0.5.0
+Flask-Login==0.6.2
 gunicorn==20.1.0
-gevent==21.8.0
+gevent==22.10.2
 flask-redis==0.4.0
 requests==2.26.0

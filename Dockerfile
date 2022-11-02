@@ -1,4 +1,4 @@
-FROM yy194131/gsc-admin-base:0.0.1
+FROM yy194131/gsc-admin-base:0.0.2
 WORKDIR /opt/snow
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
