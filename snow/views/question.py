@@ -24,7 +24,7 @@ def get_category():
         return
 
 
-CATEGORY = get_category() or [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词'), (6, '驾考科目一'), (7, '驾考科目四'),
+CATEGORY = get_category() or [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词'), (6, '驾考科目一'), (7, '驾考科三理论'),
                               (8, '交通规则')]
 
 LEVEL = [(1, '简单'), (2, '中等'), (3, '困难')]
@@ -82,7 +82,12 @@ class QuestionView(ModelView):
     def _render_content(self, context, model, name):
         if '###' in model.content:
             content, image = model.content.split('###')
-            return Markup('<span>{}</span><br><image src="{}" style="width:100px;"/>'.format(content, image))
+            if '.mp4' in image:
+                return Markup(
+                    '<span>{}</span><br><video width="300" src="{}" autoplay="autoplay" controls="controls" loop="loop"></video>'
+                    .format(content, image)
+                )
+            return Markup('<span>{}</span><br><image src="{}" style="width:200px;"/>'.format(content, image))
         return Markup('<div>{}<div>'.format(model.content.replace('\n', '<br/>')))
 
     def _render_options(self, context, model, name):
@@ -109,7 +114,11 @@ class QuestionView(ModelView):
         'level': fields.SelectField(label='难度', choices=LEVEL, default=1),
         'status': fields.SelectField(label='状态', choices=STATUS, default=1),
         'category': fields.SelectField(label='分类', choices=CATEGORY, default=2),
-        'analysis': fields.TextAreaField(label='答案解析', default='', description='支持有限的html标签，比如`img`, 具体见`https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html`'),
+        'analysis': fields.TextAreaField(
+            label='答案解析',
+            default='',
+            description='支持有限的html标签，比如`img`, 具体见`https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html`'
+        ),
     }
 
     column_filters = ('content', 'id_', 'options', 'level', 'category', 'status')
