@@ -13,7 +13,7 @@ from snow.views.index import IndexView
 
 modelviews = [
     'snow.views.index.account_view', 'snow.views.gsc.gsc_view', 'snow.views.question.question_view',
-    'snow.views.feedback.feedback_view'
+    'snow.views.feedback.feedback_view', 'snow.views.gsc.quotes_view',
 ]
 
 extensions = ['snow.ext.db']

@@ -6,6 +6,7 @@ from wtforms import fields, validators
 
 from snow.ext import db
 from snow.models.gsc import Gsc
+from snow.models.quotes import Quotes
 
 DYNASTY = [
     ('宋', '宋'),
@@ -71,10 +72,13 @@ class GscAdmin(ModelView):
     column_sortable_list = ('id_', )
 
     column_list = (
-        'id_', 'work_title', 'work_author', 'content_short', 'audio_id',
+        'id_',
+        'work_title',
+        'work_author',
+        'content_short',
+        'audio_id',
     )
-    column_filters = ('id_', 'work_title', 'work_author',
-                      'work_dynasty', 'content', 'foreword')
+    column_filters = ('id_', 'work_title', 'work_author', 'work_dynasty', 'content', 'foreword')
 
     def _render_baidu_wiki(self, context, model, name):
         if model.baidu_wiki:
@@ -82,8 +86,12 @@ class GscAdmin(ModelView):
 
     def _render_audio(self, context, model, name):
         if model.audio_id:
-            return Markup('<a href="https://songci.nos-eastchina1.126.net/audio/{}.m4a" '
-                          'target="_blank">https://songci.nos-eastchina1.126.net/audio/{}.m4a </a>'.format(model.audio_id, model.audio_id))
+            return Markup(
+                '<a href="https://songci.nos-eastchina1.126.net/audio/{}.m4a" '
+                'target="_blank">https://songci.nos-eastchina1.126.net/audio/{}.m4a </a>'.format(
+                    model.audio_id, model.audio_id
+                )
+            )
 
     def _render_translation(self, context, model, name):
         if model.translation:
@@ -144,7 +152,8 @@ class GscAdmin(ModelView):
         'intro': _render_intro,
         'layout': lambda a, b, c, d: '居中' if c.layout == 'center' else '缩进',
         'work_author': lambda a, b, c, d: Markup(
-            '<a  target="_blank" href="https://baike.baidu.com/item/{}">{}</a>'.format(c.work_author, c.work_author))
+            '<a  target="_blank" href="https://baike.baidu.com/item/{}">{}</a>'.format(c.work_author, c.work_author)
+        )
     }
 
     form_extra_fields = {
@@ -160,8 +169,10 @@ class GscAdmin(ModelView):
         'work_dynasty': fields.SelectField(label='朝代', validate_choice=True, choices=DYNASTY),
     }
 
-    form_columns = ('work_title', 'work_dynasty', 'work_author', 'foreword', 'content', 'translation', 'intro',
-                    'annotation_', 'appreciation', 'master_comment', 'layout', 'baidu_wiki', 'audio_id')
+    form_columns = (
+        'work_title', 'work_dynasty', 'work_author', 'foreword', 'content', 'translation', 'intro', 'annotation_',
+        'appreciation', 'master_comment', 'layout', 'baidu_wiki', 'audio_id'
+    )
 
     def on_model_change(self, form, model, is_created=True):
         if is_created:
@@ -195,6 +206,50 @@ class GscAdmin(ModelView):
         return super(GscAdmin, self).on_model_change(form, model, is_created)
 
 
+class QuotesView(ModelView):
+
+    page_size = 12
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
+    @property
+    def can_create(self):
+        return self.is_accessible() and (login.current_user.role & 1)
+
+    @property
+    def can_edit(self):
+        return self.is_accessible() and (login.current_user.role & 2)
+
+    @property
+    def can_delete(self):
+        return self.is_accessible() and (login.current_user.role & 4)
+
+    column_labels = {
+        'id_': '编号',
+        'quote': '名句',
+        'author': '作者',
+    }
+
+    form_columns = ('quote', 'author')
+
+    column_sortable_list = ()
+
+    column_filters = ('quote', 'author')
+
+    column_default_sort = ('id_', True)
+
+    column_formatters = {
+        'quote': lambda a, b, c, d: Markup(
+            '<a href="https://www.baidu.com/s?wd={}" \
+            target="_blank" style="text-decoration: none;color: #003472;">{}</a>'.format(c.quote, c.quote)
+        ),
+    }
+
+    can_view_details = True
+
+
 category = 'i古诗词'
 
 gsc_view = GscAdmin(Gsc, db.session, name='诗词列表', category=category)
+quotes_view = QuotesView(Quotes, db.session, name='诗词名句', category=category)
