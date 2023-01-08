@@ -30,7 +30,7 @@ jobs:
           tags: registry.cn-beijing.aliyuncs.com/roselle-1/gsc-admin:${{ env.RELEASE_VERSION }}
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: build
     environment: deploy
     steps:

@@ -4,7 +4,7 @@ import json
 import os
 
 import flask_login as login
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_admin import Admin
 from werkzeug.utils import import_string
 
@@ -12,8 +12,11 @@ from snow.ext import db, redis
 from snow.views.index import IndexView
 
 modelviews = [
-    'snow.views.index.account_view', 'snow.views.gsc.gsc_view', 'snow.views.question.question_view',
-    'snow.views.feedback.feedback_view', 'snow.views.gsc.quotes_view',
+    'snow.views.index.account_view',
+    'snow.views.gsc.gsc_view',
+    'snow.views.question.question_view',
+    'snow.views.feedback.feedback_view',
+    'snow.views.gsc.quotes_view',
 ]
 
 extensions = ['snow.ext.db']
@@ -46,6 +49,8 @@ def create_app():
     for modelview_qualname in modelviews:
         modelview = import_string(modelview_qualname)
         admin.add_view(modelview)
+    # 处理403
+    app.register_error_handler(403, handle_403)
     return app
 
 
@@ -53,3 +58,7 @@ def create_app():
 def load_user(user_id):
     from snow.models.account import Account
     return db.session.query(Account).get(user_id)
+
+
+def handle_403(e):
+    return redirect(url_for('admin.index'))
