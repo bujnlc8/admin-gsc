@@ -16,18 +16,19 @@
 
 小程序码见下图:
 
-<image src="https://blog-1256650966.cos.ap-beijing.myqcloud.com/gh_5355d8f99118_430.jpg" style="width:300px; height:300px;">
+<image src="https://blog-1256650966.cos.ap-beijing.myqcloud.com/gh_5355d8f99118_430.jpg" style="width:320px; height:320px;">
 
 
 欢迎扫码体验。
 
-另见 
+另见
 
-[后端https://github.com/bujnlc8/go-gsc](https://github.com/bujnlc8/go-gsc) 
+[后端https://github.com/bujnlc8/go-gsc](https://github.com/bujnlc8/go-gsc)
 
-[前端https://github.com/bujnlc8/igsc-wx](https://github.com/bujnlc8/igsc-wx)
+[小程序 https://github.com/bujnlc8/wx-gsc](https://github.com/bujnlc8/wx-gsc)
 
 [vim插件https://github.com/bujnlc8/vim-gsc](https://github.com/bujnlc8/vim-gsc)
+
 
 如果在使用过程中有任何问题，欢迎交流讨论。
 
