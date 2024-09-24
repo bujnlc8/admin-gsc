@@ -2,6 +2,8 @@
 
 - hosts: q_cloud
   remote_user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
   tasks:
     - name: login to docker hub
       docker_login:
