@@ -58,6 +58,5 @@ jobs:
         run: |
           ssh-keyscan -H '82.157.10.15' >> ~/.ssh/known_hosts
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-          sudo apt install python -y
           sudo pip install ansible==4.8.0
           bash deploy.sh
