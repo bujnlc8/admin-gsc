@@ -10,6 +10,7 @@ from wtforms import fields
 
 from snow.ext import db, redis
 from snow.models.question import Question
+from snow.models.region import Region
 
 
 def get_category():
@@ -20,12 +21,20 @@ def get_category():
         for k, v in enumerate(data[1:]):
             res.append((k + 1, v))
         return res
-    except:
+    except Exception:
         return
 
 
-CATEGORY = get_category() or [(1, '财经'), (2, '百科'), (3, '历史'), (4, '地理'), (5, '诗词'), (6, '驾考科目一'), (7, '驾考科三理论'),
-                              (8, '交通规则')]
+CATEGORY = get_category() or [
+    (1, '财经'),
+    (2, '百科'),
+    (3, '历史'),
+    (4, '地理'),
+    (5, '诗词'),
+    (6, '驾考科目一'),
+    (7, '驾考科三理论'),
+    (8, '交通规则'),
+]
 
 LEVEL = [(1, '简单'), (2, '中等'), (3, '困难')]
 
@@ -35,7 +44,6 @@ SERIAL = ['A', 'B', 'C', 'D']
 
 
 class QuestionView(ModelView):
-
     page_size = 12
 
     def is_accessible(self):
@@ -53,7 +61,7 @@ class QuestionView(ModelView):
     def can_delete(self):
         return self.is_accessible() and (login.current_user.role & 64)
 
-    column_sortable_list = ('id_', )
+    column_sortable_list = ('id_',)
 
     column_labels = {
         'id_': 'ID',
@@ -68,9 +76,26 @@ class QuestionView(ModelView):
         'update_time': '更新时间',
     }
 
-    column_list = ('id_', 'content', 'options', 'answer', 'level', 'category', 'status', 'update_time')
+    column_list = (
+        'id_',
+        'content',
+        'options',
+        'answer',
+        'level',
+        'category',
+        'status',
+        'update_time',
+    )
 
-    form_columns = ('content', 'options', 'answer', 'level', 'category', 'analysis', 'status')
+    form_columns = (
+        'content',
+        'options',
+        'answer',
+        'level',
+        'category',
+        'analysis',
+        'status',
+    )
     can_view_details = True
 
     column_choices = {
@@ -84,8 +109,9 @@ class QuestionView(ModelView):
             content, image = model.content.split('###')
             if '.mp4' in image:
                 return Markup(
-                    '<span>{}</span><br><video width="300" src="{}" autoplay="autoplay" controls="controls" loop="loop"></video>'
-                    .format(content, image)
+                    '<span>{}</span><br><video width="300" src="{}" autoplay="autoplay" controls="controls" loop="loop"></video>'.format(
+                        content, image
+                    )
                 )
             return Markup('<span>{}</span><br><image src="{}" style="width:200px;"/>'.format(content, image))
         return Markup('<div>{}<div>'.format(model.content.replace('\n', '<br/>')))
@@ -106,7 +132,8 @@ class QuestionView(ModelView):
         'options': _render_options,
         'answer': lambda a, b, c, d: SERIAL[c.answer - 1],
         'analysis': lambda a, b, c, d: Markup('<div>{}</div>'.format(c.analysis.replace('\n', '<br/>')))
-        if c.analysis else '无',
+        if c.analysis
+        else '无',
     }
 
     form_extra_fields = {
@@ -117,7 +144,7 @@ class QuestionView(ModelView):
         'analysis': fields.TextAreaField(
             label='答案解析',
             default='',
-            description='支持有限的html标签，比如`img`, 具体见`https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html`'
+            description='支持有限的html标签，比如`img`, 具体见`https://developers.weixin.qq.com/miniprogram/dev/component/rich-text.html`',
         ),
     }
 
@@ -138,6 +165,42 @@ class QuestionView(ModelView):
         return super(QuestionView, self).after_model_change(form, model, is_created)
 
 
+class RegionView(ModelView):
+    page_size = 12
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
+    @property
+    def can_create(self):
+        return self.is_accessible() and (login.current_user.role & 1)
+
+    @property
+    def can_edit(self):
+        return self.is_accessible() and (login.current_user.role & 2)
+
+    @property
+    def can_delete(self):
+        return self.is_accessible() and (login.current_user.role & 4)
+
+    column_labels = {
+        'region_code': '代码',
+        'name': '名称',
+        'discard_year': '废弃年份',
+    }
+
+    form_columns = ('region_code', 'name', 'discard_year')
+
+    column_sortable_list = ()
+
+    column_filters = ('region_code', 'name', 'discard_year')
+
+    column_default_sort = ('region_code', False)
+
+    can_view_details = True
+
+
 category = '百科知识'
 
 question_view = QuestionView(Question, db.session, name='题目列表', category=category)
+region_view = RegionView(Region, db.session, name='行政区划', category=category)

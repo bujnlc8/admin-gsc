@@ -13,9 +13,5 @@ class Quotes(db.Model):
     __tablename__ = 'quotes'
 
     id_ = db.Column('id', INTEGER(display_width=11), nullable=False, primary_key=True, doc='')
-    quote = db.Column(
-        'quote', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=128), nullable=False, doc=''
-    )
-    author = db.Column(
-        'author', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=32), nullable=False, doc=''
-    )
+    quote = db.Column('quote', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=128), nullable=False, doc='')
+    author = db.Column('author', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=32), nullable=False, doc='')

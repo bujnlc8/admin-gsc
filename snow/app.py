@@ -16,6 +16,7 @@ modelviews = [
     'snow.views.gsc.gsc_view',
     'snow.views.question.question_view',
     'snow.views.feedback.feedback_view',
+    'snow.views.question.region_view',
     'snow.views.gsc.quotes_view',
 ]
 
@@ -39,7 +40,11 @@ def create_app():
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 5
     app.config['REDIS_URL'] = os.environ.get('SNOW_REDIS_URL')
     admin = Admin(
-        app, name='📚', template_mode='bootstrap4', base_template='base.html', index_view=IndexView(url='/', name='')
+        app,
+        name='📚',
+        template_mode='bootstrap4',
+        base_template='base.html',
+        index_view=IndexView(url='/', name=''),
     )
     login_manager.init_app(app)
     redis.init_app(app)
@@ -57,6 +62,7 @@ def create_app():
 @login_manager.user_loader
 def load_user(user_id):
     from snow.models.account import Account
+
     return db.session.query(Account).get(user_id)
 
 

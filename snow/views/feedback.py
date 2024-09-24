@@ -13,7 +13,6 @@ from snow.models.feedback import Feedback
 
 
 class FeedbackView(ModelView):
-
     page_size = 12
 
     def is_accessible(self):
@@ -31,7 +30,7 @@ class FeedbackView(ModelView):
     def can_delete(self):
         return self.is_accessible() and (login.current_user.role & 64)
 
-    column_sortable_list = ('id_', )
+    column_sortable_list = ('id_',)
 
     column_labels = {
         'id_': 'ID',
@@ -51,7 +50,7 @@ class FeedbackView(ModelView):
     column_choices = {
         'status': [(0, '待审核'), (1, '审核通过')],
     }
-    column_editable_list = ('status', )
+    column_editable_list = ('status',)
 
     def _render_question(self, context, model, name):
         return Markup(
@@ -87,7 +86,7 @@ class FeedbackView(ModelView):
             raise ValidationError('不能再修改')
         if 'status' in form.data and form.data['status'] == 1:
             url = os.environ.get('SNOW_COIN_URL')
-            key = redis.get('{}:token'.format(model.uid))
+            key = redis.get('challenge:{}:token'.format(model.uid))
             headers = {
                 'Authorization': 'Bearer {}_{}'.format(
                     model.uid,
