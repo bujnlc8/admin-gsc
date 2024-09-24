@@ -189,6 +189,8 @@ class RegionView(ModelView):
         'discard_year': '废弃年份',
     }
 
+    column_list = ('region_code', 'name')
+
     form_columns = ('region_code', 'name', 'discard_year')
 
     column_sortable_list = ()
