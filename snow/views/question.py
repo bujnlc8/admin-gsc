@@ -189,7 +189,18 @@ class RegionView(ModelView):
         'discard_year': '废弃年份',
     }
 
-    column_list = ('region_code', 'name')
+    def render_name(self, context, model, name) -> str:
+        parent_region_codes = [f'{model.region_code[:2]}0000', f'{model.region_code[:4]}00']
+        regions = Region.get_by_region_codes(parent_region_codes)
+        names = [x.name for x in regions]
+        names.append(model.name)
+        return ''.join(names)
+
+    column_formatters = {
+        'name': render_name,
+    }
+
+    column_list = ('region_code', 'name', 'discard_year')
 
     form_columns = ('region_code', 'name', 'discard_year')
 
@@ -200,6 +211,8 @@ class RegionView(ModelView):
     column_default_sort = ('region_code', False)
 
     can_view_details = True
+
+    column_details_list = ('region_code', 'name', 'discard_year')
 
 
 category = '百科知识'

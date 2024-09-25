@@ -45,6 +45,9 @@ def create_app():
         template_mode='bootstrap4',
         base_template='base.html',
         index_view=IndexView(url='/', name=''),
+        category_icon_classes={
+            'Profiles': 'glyphicon glyphicon-wrench',
+        },
     )
     login_manager.init_app(app)
     redis.init_app(app)

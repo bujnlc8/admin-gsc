@@ -1,7 +1,3 @@
-# coding=utf-8
-
-from __future__ import unicode_literals
-
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, DATETIME
 from snow.ext import db
 
@@ -15,10 +11,10 @@ class Feedback(db.Model):
     uid = db.Column('uid', INTEGER(display_width=11), nullable=False, doc='')
     question_id = db.Column('question_id', INTEGER(display_width=11), nullable=False, doc='')
     remark = db.Column(
-        'remark', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=512), nullable=False, doc=''
+        'remark', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=512), nullable=False, doc=''
     )
     nickname = db.Column(
-        'nickname', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=100), nullable=False, doc=''
+        'nickname', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=100), nullable=False, doc=''
     )
     type_ = db.Column('type', INTEGER(display_width=1), nullable=False, doc='')
     status = db.Column('status', INTEGER(display_width=1), nullable=False, doc='')

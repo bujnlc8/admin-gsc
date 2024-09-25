@@ -13,13 +13,13 @@ class Question(db.Model):
 
     id_ = db.Column('id', INTEGER(display_width=11), nullable=False, primary_key=True, doc='')
     content = db.Column(
-        'content', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=5000), nullable=False, doc=''
+        'content', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=5000), nullable=False, doc=''
     )
     options = db.Column(
-        'options', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=2000), nullable=False, doc=''
+        'options', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=2000), nullable=False, doc=''
     )
     analysis = db.Column(
-        'analysis', VARCHAR(charset=u'utf8mb4', collation=u'utf8mb4_bin', length=5000), nullable=False, doc=''
+        'analysis', VARCHAR(charset='utf8mb4', collation='utf8mb4_bin', length=5000), nullable=False, doc=''
     )
     answer = db.Column('answer', INTEGER(display_width=1), nullable=False, doc='')
     level = db.Column('level', INTEGER(display_width=1), nullable=False, doc='')

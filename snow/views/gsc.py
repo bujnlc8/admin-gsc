@@ -1,4 +1,3 @@
-# coding=utf-8
 import flask_login as login
 from flask_admin.contrib.sqla import ModelView
 from markupsafe import Markup
@@ -69,7 +68,7 @@ class GscAdmin(ModelView):
         'audio_id': '音频ID',
     }
 
-    column_sortable_list = ('id_', )
+    column_sortable_list = ('id_',)
 
     column_list = (
         'id_',
@@ -153,7 +152,7 @@ class GscAdmin(ModelView):
         'layout': lambda a, b, c, d: '居中' if c.layout == 'center' else '缩进',
         'work_author': lambda a, b, c, d: Markup(
             '<a  target="_blank" href="https://baike.baidu.com/item/{}">{}</a>'.format(c.work_author, c.work_author)
-        )
+        ),
     }
 
     form_extra_fields = {
@@ -170,8 +169,19 @@ class GscAdmin(ModelView):
     }
 
     form_columns = (
-        'work_title', 'work_dynasty', 'work_author', 'foreword', 'content', 'translation', 'intro', 'annotation_',
-        'appreciation', 'master_comment', 'layout', 'baidu_wiki', 'audio_id'
+        'work_title',
+        'work_dynasty',
+        'work_author',
+        'foreword',
+        'content',
+        'translation',
+        'intro',
+        'annotation_',
+        'appreciation',
+        'master_comment',
+        'layout',
+        'baidu_wiki',
+        'audio_id',
     )
 
     def on_model_change(self, form, model, is_created=True):
@@ -207,7 +217,6 @@ class GscAdmin(ModelView):
 
 
 class QuotesView(ModelView):
-
     page_size = 12
 
     def is_accessible(self):
