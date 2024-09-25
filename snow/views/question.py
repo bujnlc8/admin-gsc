@@ -190,7 +190,11 @@ class RegionView(ModelView):
     }
 
     def render_name(self, context, model, name) -> str:
-        parent_region_codes = [f'{model.region_code[:2]}0000', f'{model.region_code[:4]}00']
+        parent_region_codes = []
+        if not model.region_code.endswith('0000'):
+            parent_region_codes.append(f'{model.region_code[:2]}0000')
+        if not model.region_code.endswith('00'):
+            parent_region_codes.append(f'{model.region_code[:4]}00')
         regions = Region.get_by_region_codes(parent_region_codes)
         names = [x.name for x in regions]
         names.append(model.name)
